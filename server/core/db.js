@@ -146,6 +146,7 @@ module.exports = {
               break
             case 'mysql':
               await conn.promise().query(`set autocommit = 1`)
+              await conn.promise().query(`ALTER TABLE users ALTER COLUMN timezone SET DEFAULT 'Asia/Singapore';`)
               done()
               break
             default:

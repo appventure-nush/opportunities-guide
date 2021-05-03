@@ -192,9 +192,6 @@ module.exports = {
 
         await WIKI.models.users.updateUser({
           id: usr.id,
-          name: _.trim(args.name),
-          jobTitle: _.trim(args.jobTitle),
-          location: _.trim(args.location),
           timezone: args.timezone,
           dateFormat: args.dateFormat,
           appearance: args.appearance

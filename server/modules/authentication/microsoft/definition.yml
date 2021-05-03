@@ -5,12 +5,14 @@ author: requarks.io
 logo: https://static.requarks.io/logo/microsoft.svg
 color: blue
 website: https://apps.dev.microsoft.com/
-isAvailable: false
+isAvailable: true
 useForm: false
 scopes:
   - openid
   - profile
   - email
+  - User.ReadBasic.All
+  - User.Read
 props:
   clientId:
     type: String

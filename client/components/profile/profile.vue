@@ -25,29 +25,6 @@
               v-list-item-content
                 v-list-item-title {{$t('profile:displayName')}}
                 v-list-item-subtitle {{ user.name }}
-              v-list-item-action
-                v-menu(
-                  v-model='editPop.name'
-                  :close-on-content-click='false'
-                  min-width='350'
-                  left
-                  )
-                  template(v-slot:activator='{ on }')
-                    v-btn(text, color='grey', small, v-on='on', @click='focusField(`iptDisplayName`)')
-                      v-icon(left) mdi-pencil
-                      span {{ $t('common:actions:edit') }}
-                  v-card
-                    v-text-field(
-                      ref='iptDisplayName'
-                      v-model='user.name'
-                      :label='$t(`profile:displayName`)'
-                      solo
-                      hide-details
-                      append-icon='mdi-check'
-                      @click:append='editPop.name = false'
-                      @keydown.enter='editPop.name = false'
-                      @keydown.esc='editPop.name = false'
-                    )
             v-divider
             v-list-item
               v-list-item-avatar(size='32')
@@ -55,29 +32,6 @@
               v-list-item-content
                 v-list-item-title {{$t('profile:location')}}
                 v-list-item-subtitle {{ user.location }}
-              v-list-item-action
-                v-menu(
-                  v-model='editPop.location'
-                  :close-on-content-click='false'
-                  min-width='350'
-                  left
-                  )
-                  template(v-slot:activator='{ on }')
-                    v-btn(text, color='grey', small, v-on='on', @click='focusField(`iptLocation`)')
-                      v-icon(left) mdi-pencil
-                      span {{ $t('common:actions:edit') }}
-                  v-card
-                    v-text-field(
-                      ref='iptLocation'
-                      v-model='user.location'
-                      :label='$t(`profile:location`)'
-                      solo
-                      hide-details
-                      append-icon='mdi-check'
-                      @click:append='editPop.location = false'
-                      @keydown.enter='editPop.location = false'
-                      @keydown.esc='editPop.location = false'
-                    )
             v-divider
             v-list-item
               v-list-item-avatar(size='32')
@@ -85,30 +39,6 @@
               v-list-item-content
                 v-list-item-title {{$t('profile:jobTitle')}}
                 v-list-item-subtitle {{ user.jobTitle }}
-              v-list-item-action
-                v-menu(
-                  v-model='editPop.jobTitle'
-                  :close-on-content-click='false'
-                  min-width='350'
-                  left
-                  )
-                  template(v-slot:activator='{ on }')
-                    v-btn(text, color='grey', small, v-on='on', @click='focusField(`iptJobTitle`)')
-                      v-icon(left) mdi-pencil
-                      span {{ $t('common:actions:edit') }}
-                  v-card
-                    v-text-field(
-                      ref='iptJobTitle'
-                      v-model='user.jobTitle'
-                      :label='$t(`profile:jobTitle`)'
-                      solo
-                      hide-details
-                      append-icon='mdi-check'
-                      @click:append='editPop.jobTitle = false'
-                      @keydown.enter='editPop.jobTitle = false'
-                      @keydown.esc='editPop.jobTitle = false'
-                    )
-
         v-card.mt-3.animated.fadeInUp.wait-p2s
           v-toolbar(color='blue-grey', dark, dense, flat)
             v-toolbar-title

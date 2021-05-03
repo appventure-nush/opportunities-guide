@@ -3,7 +3,6 @@ const mdEmoji = require('markdown-it-emoji')
 const { JSDOM } = require('jsdom')
 const createDOMPurify = require('dompurify')
 const _ = require('lodash')
-const { AkismetClient } = require('akismet-api')
 const moment = require('moment')
 
 /* global WIKI */
@@ -34,28 +33,7 @@ module.exports = {
    */
   async init (config) {
     WIKI.logger.info('(COMMENTS/DEFAULT) Initializing...')
-    if (WIKI.data.commentProvider.config.akismet && WIKI.data.commentProvider.config.akismet.length > 2) {
-      akismetClient = new AkismetClient({
-        key: WIKI.data.commentProvider.config.akismet,
-        blog: WIKI.config.host,
-        lang: WIKI.config.lang.namespacing ? WIKI.config.lang.namespaces.join(', ') : WIKI.config.lang.code,
-        charset: 'UTF-8'
-      })
-      try {
-        const isValid = await akismetClient.verifyKey()
-        if (!isValid) {
-          akismetClient = null
-          WIKI.logger.warn('(COMMENTS/DEFAULT) Akismet Key is invalid! [ DISABLED ]')
-        } else {
-          WIKI.logger.info('(COMMENTS/DEFAULT) Akismet key is valid. [ OK ]')
-        }
-      } catch (err) {
-        akismetClient = null
-        WIKI.logger.warn('(COMMENTS/DEFAULT) Unable to verify Akismet Key: ' + err.message)
-      }
-    } else {
-      akismetClient = null
-    }
+    akismetClient = null
     WIKI.logger.info('(COMMENTS/DEFAULT) Initialization completed.')
   },
   /**

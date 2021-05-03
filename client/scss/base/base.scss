@@ -3,6 +3,7 @@ html {
   height: 100%;
   overflow-y: auto !important;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -33,9 +34,9 @@ html {
 #root .v-application {
   .overline {
     line-height: 1rem;
-    font-size: .625rem!important;
+    font-size: .625rem !important;
     font-weight: 400;
-    letter-spacing: .1666666667em!important;
+    letter-spacing: .1666666667em !important;
   }
 
   @for $i from 0 through 25 {
@@ -70,6 +71,7 @@ html {
       border-color: lighten(mc('grey', '900'), percentage($i/100)) !important;
     }
   }
+
   .grey.darken-5 {
     background-color: #0C0C0C !important;
     border-color: #0C0C0C !important;
@@ -79,8 +81,25 @@ html {
     background-color: darken(mc('blue', '900'), 20%) !important;
     border-color: darken(mc('blue', '900'), 20%) !important;
   }
+
   .indigo.darken-5 {
     background-color: darken(mc('indigo', '900'), 10%) !important;
     border-color: darken(mc('indigo', '900'), 10%) !important;
   }
+}
+
+span.text-huge {
+  font-size: 1.8em;
+}
+
+span.text-big {
+  font-size: 1.4em;
+}
+
+span.text-small {
+  font-size: 0.85em;
+}
+
+span.text-tiny {
+  font-size: 0.7em;
 }

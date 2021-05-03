@@ -89,9 +89,6 @@
             v-list-item(to='/api', v-if='hasPermission([`manage:system`, `manage:api`])')
               v-list-item-avatar(size='24', tile): v-icon mdi-call-split
               v-list-item-title {{ $t('admin:api.title') }}
-            v-list-item(to='/mail', color='primary', v-if='hasPermission(`manage:system`)')
-              v-list-item-avatar(size='24', tile): v-icon mdi-email-multiple-outline
-              v-list-item-title {{ $t('admin:mail.title') }}
             v-list-item(to='/security', v-if='hasPermission(`manage:system`)')
               v-list-item-avatar(size='24', tile): v-icon mdi-lock-check
               v-list-item-title {{ $t('admin:security.title') }}
