@@ -80,7 +80,7 @@ module.exports = {
         dbClient = 'pg'
 
         if (dbUseSSL && _.isPlainObject(dbConfig)) {
-          dbConfig.ssl = (sslOptions === true) ? { rejectUnauthorized: true } : sslOptions
+          dbConfig.ssl = (sslOptions === true) ? {rejectUnauthorized: true} : sslOptions
         }
         break
       case 'mariadb':
@@ -118,7 +118,7 @@ module.exports = {
         break
       case 'sqlite':
         dbClient = 'sqlite3'
-        dbConfig = { filename: WIKI.config.db.storage }
+        dbConfig = {filename: WIKI.config.db.storage}
         break
       default:
         WIKI.logger.error('Invalid DB Type')
@@ -146,7 +146,6 @@ module.exports = {
               break
             case 'mysql':
               await conn.promise().query(`set autocommit = 1`)
-              await conn.promise().query(`ALTER TABLE users ALTER COLUMN timezone SET DEFAULT 'Asia/Singapore';`)
               done()
               break
             default:
@@ -168,7 +167,7 @@ module.exports = {
     let conAttempts = 0
     let initTasks = {
       // -> Attempt initial connection
-      async connect () {
+      async connect() {
         try {
           WIKI.logger.info('Connecting to database...')
           await self.knex.raw('SELECT 1 + 1;')
@@ -189,14 +188,16 @@ module.exports = {
         }
       },
       // -> Migrate DB Schemas
-      async syncSchemas () {
-        return self.knex.migrate.latest({
+      async syncSchemas() {
+        const schema = self.knex.migrate.latest({
           tableName: 'migrations',
           migrationSource
         })
+        self.knex.raw(`ALTER TABLE users ALTER COLUMN timezone SET DEFAULT 'Asia/Singapore';`)
+        return schema
       },
       // -> Migrate DB Schemas from beta
-      async migrateFromBeta () {
+      async migrateFromBeta() {
         return migrateFromBeta.migrate(self.knex)
       }
     }
@@ -206,7 +207,9 @@ module.exports = {
       initTasks.migrateFromBeta,
       initTasks.syncSchemas
     ] : [
-      () => { return Promise.resolve() }
+      () => {
+        return Promise.resolve()
+      }
     ]
 
     // Perform init tasks
@@ -222,7 +225,7 @@ module.exports = {
   /**
    * Subscribe to database LISTEN / NOTIFY for multi-instances events
    */
-  async subscribeToNotifications () {
+  async subscribeToNotifications() {
     const useHA = (WIKI.config.ha === true || WIKI.config.ha === 'true' || WIKI.config.ha === 1 || WIKI.config.ha === '1')
     if (!useHA) {
       return
@@ -234,7 +237,7 @@ module.exports = {
     const PGPubSub = require('pg-pubsub')
 
     this.listener = new PGPubSub(this.knex.client.connectionSettings, {
-      log (ev) {
+      log(ev) {
         WIKI.logger.debug(ev)
       }
     })
@@ -260,7 +263,7 @@ module.exports = {
   /**
    * Unsubscribe from database LISTEN / NOTIFY
    */
-  async unsubscribeToNotifications () {
+  async unsubscribeToNotifications() {
     if (this.listener) {
       WIKI.events.outbound.offAny(this.notifyViaDB)
       WIKI.events.inbound.removeAllListeners()
@@ -273,7 +276,7 @@ module.exports = {
    * @param {string} event Event fired
    * @param {object} value Payload of the event
    */
-  notifyViaDB (event, value) {
+  notifyViaDB(event, value) {
     WIKI.models.listener.publish('wiki', {
       source: WIKI.INSTANCE_ID,
       event,

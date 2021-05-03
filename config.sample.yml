@@ -19,24 +19,23 @@ port: 3000
 # - mariadb = MariaDB 10.2.7 or later
 # - mssql = MS SQL Server 2012 or later
 # - sqlite = SQLite 3.9 or later
-
 db:
   type: postgres
 
   # PostgreSQL / MySQL / MariaDB / MS SQL Server only:
-  host: localhost
+  host: db
   port: 5432
-  user: wikijs
-  pass: wikijsrocks
+  user: root
+  pass: root
   db: wiki
-  ssl: false
+  ssl:
+    rejectUnauthorized: false
 
   # Optional - PostgreSQL / MySQL / MariaDB only:
   # -> Uncomment lines you need below and set `auto` to false
   # -> Full list of accepted options: https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options
   sslOptions:
-    auto: true
-    # rejectUnauthorized: false
+    rejectUnauthorized: false
     # ca: path/to/ca.crt
     # cert: path/to/cert.crt
     # key: path/to/key.pem
@@ -47,7 +46,7 @@ db:
   schema: public
 
   # SQLite only:
-  storage: path/to/database.sqlite
+#  storage: path/to/database.sqlite
 
 #######################################################################
 # ADVANCED OPTIONS                                                    #
@@ -62,29 +61,6 @@ db:
 
 ssl:
   enabled: false
-  port: 3443
-
-  # Provider to use, possible values: custom, letsencrypt
-  provider: custom
-
-  # ++++++ For custom only ++++++
-  # Certificate format, either 'pem' or 'pfx':
-  format: pem
-  # Using PEM format:
-  key: path/to/key.pem
-  cert: path/to/cert.pem
-  # Using PFX format:
-  pfx: path/to/cert.pfx
-  # Passphrase when using encrypted PEM / PFX keys (default: null):
-  passphrase: null
-  # Diffie Hellman parameters, with key length being greater or equal
-  # to 1024 bits (default: null):
-  dhparam: null
-
-  # ++++++ For letsencrypt only ++++++
-  domain: wiki.yourdomain.com
-  subscriberEmail: admin@example.com
-
 # ---------------------------------------------------------------------
 # Database Pool Options
 # ---------------------------------------------------------------------
