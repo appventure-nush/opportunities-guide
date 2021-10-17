@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang="pug">
   v-app-bar.nav-header(color='black', dark, app, :clipped-left='!$vuetify.rtl', :clipped-right='$vuetify.rtl', fixed, flat, :extended='searchIsShown && $vuetify.breakpoint.smAndDown')
     v-toolbar(color='deep-purple', flat, slot='extension', v-if='searchIsShown && $vuetify.breakpoint.smAndDown')
       v-text-field(
@@ -45,36 +45,39 @@
           //-         v-list-item-subtitle.overline.grey--text.text--lighten-2 Coming soon
           v-toolbar-title(:class='{ "mx-3": $vuetify.breakpoint.mdAndUp, "mx-1": $vuetify.breakpoint.smAndDown }')
             span.subheading {{title}}
-      v-flex(md4, v-if='$vuetify.breakpoint.mdAndUp')
+      v-flex(md3, v-if='$vuetify.breakpoint.mdAndUp')
         v-toolbar.nav-header-inner(color='black', dark, flat)
           slot(name='mid')
             transition(name='navHeaderSearch', v-if='searchIsShown')
-              v-text-field(
-                ref='searchField',
-                v-if='searchIsShown && $vuetify.breakpoint.mdAndUp',
-                v-model='search',
-                color='white',
-                :label='$t(`common:header.search`)',
-                single-line,
-                solo
-                flat
-                rounded
-                hide-details,
-                prepend-inner-icon='mdi-magnify',
-                :loading='searchIsLoading',
-                @keyup.enter='searchEnter'
-                @keyup.esc='searchClose'
-                @focus='searchFocus'
-                @blur='searchBlur'
-                @keyup.down='searchMove(`down`)'
-                @keyup.up='searchMove(`up`)'
-                autocomplete='none'
-              )
-            v-tooltip(bottom)
-              template(v-slot:activator='{ on }')
-                v-btn.ml-2.mr-0(icon, v-on='on', href='/t', :aria-label='$t(`common:header.browseTags`)')
+              v-row
+                v-text-field(
+                  ref='searchField',
+                  v-if='searchIsShown && $vuetify.breakpoint.mdAndUp',
+                  v-model='search',
+                  color='white',
+                  :label='$t(`common:header.search`)',
+                  single-line,
+                  solo
+                  flat
+                  rounded
+                  hide-details,
+                  prepend-inner-icon='mdi-magnify',
+                  :loading='searchIsLoading',
+                  @keyup.enter='searchEnter'
+                  @keyup.esc='searchClose'
+                  @focus='searchFocus'
+                  @blur='searchBlur'
+                  @keyup.down='searchMove(`down`)'
+                  @keyup.up='searchMove(`up`)'
+                  autocomplete='none'
+                )
+
+                v-btn(style="background-color: transparent; min-height: 48px", href='/t', :aria-label='$t(`common:header.browseTags`)', v-if='!hideSearch')
                   v-icon(color='grey') mdi-tag-multiple
-              span {{$t('common:header.browseTags')}}
+                  span {{$t('common:header.browseTags')}}
+      v-flex(md1, v-if='$vuetify.breakpoint.mdAndUp')
+        v-divider(vertical)
+
       v-flex(xs7, md4)
         v-toolbar.nav-header-inner.pr-4(color='black', dark, flat)
           v-spacer
@@ -83,14 +86,10 @@
 
           slot(name='actions')
 
-          //- (mobile) SEARCH TOGGLE
+          //- (mobile) Tags
 
-          v-btn(
-            v-if='!hideSearch && $vuetify.breakpoint.smAndDown'
-            @click='searchToggle'
-            icon
-            )
-            v-icon(color='grey') mdi-magnify
+          v-btn(icon, v-on='on', href='/t', :aria-label='$t(`common:header.browseTags`)', v-if='!hideSearch && $vuetify.breakpoint.smAndDown')
+            v-icon(color='grey') mdi-tag-multiple
 
           //- LANGUAGES
 
@@ -107,7 +106,7 @@
                       tile
                       height='64'
                       :aria-label='$t(`common:header.language`)'
-                      )
+                    )
                       v-icon(color='grey') mdi-web
                   span {{$t('common:header.language')}}
               v-list(nav)
@@ -132,7 +131,7 @@
                       tile
                       height='64'
                       :aria-label='$t(`common:header.pageActions`)'
-                      )
+                    )
                       v-icon(color='grey') mdi-file-document-edit-outline
                   span {{$t('common:header.pageActions')}}
               v-list(nav, :light='!$vuetify.theme.dark', :dark='$vuetify.theme.dark', :class='$vuetify.theme.dark ? `grey darken-4` : ``')
@@ -202,7 +201,7 @@
                     tile
                     height='64'
                     :aria-label='$t(`common:header.account`)'
-                    )
+                  )
                     v-icon(v-if='picture.kind === `initials`', color='grey') mdi-account-circle
                     v-avatar(v-else-if='picture.kind === `image`', :size='34')
                       v-img(:src='picture.url')
@@ -245,7 +244,7 @@
 </template>
 
 <script>
-import { get, sync } from 'vuex-pathify'
+import {get, sync} from 'vuex-pathify'
 import _ from 'lodash'
 
 import movePageMutation from 'gql/common/common-pages-mutation-move.gql'
@@ -302,7 +301,7 @@ export default {
     pictureUrl: get('user/pictureUrl'),
     isAuthenticated: get('user/authenticated'),
     permissions: get('user/permissions'),
-    picture () {
+    picture() {
       if (this.pictureUrl && this.pictureUrl.length > 1) {
         return {
           kind: 'image',
@@ -320,10 +319,10 @@ export default {
         }
       }
     },
-    isAdmin () {
+    isAdmin() {
       return _.intersection(this.permissions, ['manage:system', 'write:users', 'manage:users', 'write:groups', 'manage:groups', 'manage:navigation', 'manage:theme', 'manage:api']).length > 0
     },
-    hasNewPagePermission () {
+    hasNewPagePermission() {
       return this.hasAdminPermission || _.intersection(this.permissions, ['write:pages']).length > 0
     },
     hasAdminPermission: get('page/effectivePermissions@system.manage'),
@@ -332,17 +331,17 @@ export default {
     hasDeletePagesPermission: get('page/effectivePermissions@pages.delete'),
     hasReadSourcePermission: get('page/effectivePermissions@source.read'),
     hasReadHistoryPermission: get('page/effectivePermissions@history.read'),
-    hasAnyPagePermissions () {
+    hasAnyPagePermissions() {
       return this.hasAdminPermission || this.hasWritePagesPermission || this.hasManagePagesPermission ||
         this.hasDeletePagesPermission || this.hasReadSourcePermission || this.hasReadHistoryPermission
     }
   },
-  created () {
+  created() {
     if (this.hideSearch || this.dense || this.$vuetify.breakpoint.smAndDown) {
       this.searchIsShown = false
     }
   },
-  mounted () {
+  mounted() {
     this.$root.$on('pageEdit', () => {
       this.pageEdit()
     })
@@ -367,17 +366,17 @@ export default {
     this.isDevMode = siteConfig.devMode === true
   },
   methods: {
-    searchFocus () {
+    searchFocus() {
       this.searchIsFocused = true
     },
-    searchBlur () {
+    searchBlur() {
       this.searchIsFocused = false
     },
-    searchClose () {
+    searchClose() {
       this.search = ''
       this.searchBlur()
     },
-    searchToggle () {
+    searchToggle() {
       this.searchIsShown = !this.searchIsShown
       if (this.searchIsShown) {
         _.delay(() => {
@@ -385,31 +384,31 @@ export default {
         }, 200)
       }
     },
-    searchEnter () {
+    searchEnter() {
       this.$root.$emit('searchEnter', true)
     },
     searchMove(dir) {
       this.$root.$emit('searchMove', dir)
     },
-    pageNew () {
+    pageNew() {
       this.newPageModal = true
     },
-    pageNewCreate ({ path, locale }) {
+    pageNewCreate({path, locale}) {
       window.location.assign(`/e/${locale}/${path}`)
     },
-    pageView () {
+    pageView() {
       window.location.assign(`/${this.locale}/${this.path}`)
     },
-    pageEdit () {
+    pageEdit() {
       window.location.assign(`/e/${this.locale}/${this.path}`)
     },
-    pageHistory () {
+    pageHistory() {
       window.location.assign(`/h/${this.locale}/${this.path}`)
     },
-    pageSource () {
+    pageSource() {
       window.location.assign(`/s/${this.locale}/${this.path}`)
     },
-    pageDuplicate () {
+    pageDuplicate() {
       const pathParts = this.path.split('/')
       this.duplicateOpts = {
         locale: this.locale,
@@ -417,16 +416,16 @@ export default {
         modal: true
       }
     },
-    pageDuplicateHandle ({ locale, path }) {
+    pageDuplicateHandle({locale, path}) {
       window.location.assign(`/e/${locale}/${path}?from=${this.$store.get('page/id')}`)
     },
-    pageConvert () {
+    pageConvert() {
       this.convertPageModal = true
     },
-    pageMove () {
+    pageMove() {
       this.movePageModal = true
     },
-    async pageMoveRename ({ path, locale }) {
+    async pageMoveRename({path, locale}) {
       this.$store.commit(`loadingStart`, 'page-move')
       try {
         const resp = await this.$apollo.mutate({
@@ -447,10 +446,10 @@ export default {
         this.$store.commit(`loadingStop`, 'page-move')
       }
     },
-    pageDelete () {
+    pageDelete() {
       this.deletePageModal = true
     },
-    assets () {
+    assets() {
       // window.location.assign(`/f`)
       this.$store.commit('showNotification', {
         style: 'indigo',
@@ -458,7 +457,7 @@ export default {
         icon: 'ferry'
       })
     },
-    async changeLocale (locale) {
+    async changeLocale(locale) {
       await this.$i18n.i18next.changeLanguage(locale.code)
       switch (this.mode) {
         case 'view':
@@ -467,17 +466,17 @@ export default {
           break
       }
     },
-    logout () {
+    logout() {
       window.location.assign('/logout')
     },
-    goHome () {
+    goHome() {
       window.location.assign('/')
     }
   }
 }
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 
 .nav-header {
   //z-index: 1000;
@@ -488,6 +487,7 @@ export default {
     .v-toolbar__content {
       padding: 0;
     }
+
     .v-text-field .v-input__prepend-inner {
       padding: 0 14px 0 5px;
       padding-right: 14px;
@@ -552,14 +552,17 @@ export default {
     transition: opacity .25s ease, transform .25s ease;
     opacity: 1;
   }
+
   &-enter-active {
     transition-delay: .25s;
   }
+
   &-enter, &-leave-to {
     opacity: 0;
     transform: scale(.7, .7);
   }
 }
+
 .navHeaderLoading { // To avoid search bar jumping
   width: 22px;
 }
