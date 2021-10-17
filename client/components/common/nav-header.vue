@@ -49,7 +49,7 @@
         v-toolbar.nav-header-inner(color='black', dark, flat)
           slot(name='mid')
             transition(name='navHeaderSearch', v-if='searchIsShown')
-              v-row
+              v-row(style='flex-wrap: unset!important')
                 v-text-field(
                   ref='searchField',
                   v-if='searchIsShown && $vuetify.breakpoint.mdAndUp',
