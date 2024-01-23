@@ -3,9 +3,10 @@ FROM node:14-alpine AS base
 FROM base AS modules
 
 WORKDIR /app
+RUN apk add g++ make python --no-cache
 # install only production modules
 COPY package.json package-lock.json .
-RUN npm ci --omit=dev
+RUN npm ci --production
 
 FROM base AS deploy
 
