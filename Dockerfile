@@ -3,7 +3,7 @@ FROM node:14-alpine AS base
 FROM base AS modules
 
 WORKDIR /app
-RUN apk add g++ make python --no-cache
+RUN apk add g++ make python3 --no-cache
 # install only production modules
 COPY package.json package-lock.json .
 RUN npm ci --production
