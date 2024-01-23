@@ -11,4 +11,4 @@ COPY --chown=nop-guide:root ./server ./server
 COPY --chown=nop-guide:root ./package.json ./package.json
 COPY --chown=nop-guide:root ./LICENSE ./LICENSE
 
-RUN mv config.sample.yml config.yml
+COPY --chown=nop-guide:root ./config.sample.yml ./config.yml
