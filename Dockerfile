@@ -1,12 +1,4 @@
-FROM node:12-alpine AS builder
-WORKDIR /app
-COPY package.json package-lock.json .
-RUN npm ci
-COPY . .
-RUN mv config.sample.yml config.yml
-RUN npm run build
-
-FROM busybox:musl AS deploy
+FROM busybox:musl
 RUN adduser -S nop-guide
 USER nop-guide
 RUN mkdir /home/nop-guide/nop-guide
