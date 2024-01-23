@@ -9,7 +9,7 @@ RUN apk add g++ make python3 --no-cache
 # install only production modules
 COPY package.json package-lock.json .
 RUN npm --version
-RUN npm ci
+RUN npm i
 
 FROM base AS deploy
 
