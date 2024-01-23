@@ -1,12 +1,15 @@
 FROM node:14-alpine AS base
 
+ENV NODE_ENV=production
+
 FROM base AS modules
 
 WORKDIR /app
 RUN apk add g++ make python3 --no-cache
 # install only production modules
 COPY package.json package-lock.json .
-RUN npm ci --production
+RUN npm --version
+RUN npm ci
 
 FROM base AS deploy
 
